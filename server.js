@@ -6,10 +6,7 @@ const axios = require('axios');
 const port = process.env.PORT || 1337;
 
 const app = express();
-
-if (process.env.PRODUCTION) {
-  app.use(express.static(process.env.CLIENT_FOLDER));
-}
+app.use(express.static(process.env.CLIENT_FOLDER));
 app.use(bodyParser.json());
 
 app.get('/api/midpoint', async (req, res) => {
@@ -51,6 +48,10 @@ app.post('/api/account', async (req, res) => {
   }
 });
 
+app.get('*', (req, res) => {
+  res.sendFile(process.env.CLIENT_FOLDER);
+});
+
 app.listen(port, () => {
   console.log(`listening on port ${port}`);
-})
+});
