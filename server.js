@@ -1,20 +1,21 @@
 require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
-const path = require('path');
 const axios = require('axios');
 
 const port = process.env.PORT || 1337;
 
 const app = express();
 
-app.use(express.static(process.env.CLIENT_FOLDER));
+if (process.env.PRODUCTION) {
+  app.use(express.static(process.env.CLIENT_FOLDER));
+}
 app.use(bodyParser.json());
 
 app.get('/api/midpoint', async (req, res) => {
   const options = {
     method: 'GET',
-    url: process.env.LOCATION_SERVICE,
+    url: `${process.env.LOCATION_SERVICE}/account`,
     body: req.body
   }
   try {
@@ -24,7 +25,7 @@ app.get('/api/midpoint', async (req, res) => {
   }
 });
 
-app.get('/api/account', (req, res) => {
+app.get('/api/account', async (req, res) => {
   const options = {
     method: 'GET',
     url: process.env.ACCOUNT_SERVICE,
@@ -37,7 +38,7 @@ app.get('/api/account', (req, res) => {
   }
 });
 
-app.post('/api/account', (req, res) => {
+app.post('/api/account', async (req, res) => {
   const options = {
     method: 'POST',
     url: process.env.ACCOUNT_SERVICE,
@@ -49,3 +50,7 @@ app.post('/api/account', (req, res) => {
     console.log('you lost the hackathon', err);
   }
 });
+
+app.listen(port, () => {
+  console.log(`listening on port ${port}`);
+})
