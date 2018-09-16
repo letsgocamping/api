@@ -9,11 +9,11 @@ const app = express();
 app.use(express.static(process.env.CLIENT_FOLDER));
 app.use(bodyParser.json());
 
-app.get('/api/midpoint', async (req, res) => {
+app.post('/api/midpoint', async (req, res) => {
   const options = {
-    method: 'GET',
-    url: `${process.env.LOCATION_SERVICE}/account`,
-    body: req.body
+    method: 'POST',
+    url: `${process.env.LOCATION_SERVICE}/midpoint`,
+    data: req.body
   }
   try {
     const result = await axios(options);
