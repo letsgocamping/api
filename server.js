@@ -17,19 +17,21 @@ app.get('/api/midpoint', async (req, res) => {
   }
   try {
     const result = await axios(options);
+    res.send(result.data)
   } catch (err) {
     console.log('you lost the hackathon', err);
   }
 });
 
-app.get('/api/account', async (req, res) => {
+app.get('/api/account/:email', async (req, res) => {
   const options = {
     method: 'GET',
-    url: process.env.ACCOUNT_SERVICE,
+    url: `${process.env.ACCOUNT_SERVICE}/account/${req.params.email}`,
     body: req.body
   }
   try {
     const result = await axios(options);
+    res.send(result.data)
   } catch (err) {
     console.log('you lost the hackathon', err);
   }
@@ -43,12 +45,14 @@ app.post('/api/account', async (req, res) => {
   }
   try {
     const result = await axios(options);
+    res.send(result.data)
   } catch (err) {
     console.log('you lost the hackathon', err);
   }
 });
 
 app.get('*', (req, res) => {
+    console.log(req.url)
   res.sendFile(process.env.CLIENT_FOLDER);
 });
 
