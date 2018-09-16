@@ -40,8 +40,8 @@ app.get('/api/account/:email', async (req, res) => {
 app.post('/api/account', async (req, res) => {
   const options = {
     method: 'POST',
-    url: process.env.ACCOUNT_SERVICE,
-    body: req.body
+    url: `${process.env.ACCOUNT_SERVICE}/account`,
+    data: req.body
   }
   try {
     const result = await axios(options);
@@ -52,7 +52,6 @@ app.post('/api/account', async (req, res) => {
 });
 
 app.get('*', (req, res) => {
-    console.log(req.url)
   res.sendFile(process.env.CLIENT_FOLDER);
 });
 
